@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { EmojiRain } from "./EmojiRain";
+import { EmojiRain } from "@/components/EmojiRain";
 
 export function SceneCountdown({ onDone }: { onDone: () => void }) {
   const [step, setStep] = useState(0); // 0,1,2 -> 1,2,3 then 3 -> burst
