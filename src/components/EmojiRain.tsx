@@ -4,26 +4,30 @@ interface Props {
   emojis?: string[];
   count?: number;
   className?: string;
+  speed?: number; // seconds for one fall
 }
 
 export function EmojiRain({
   emojis = ["💖", "💕", "🌸", "💗", "🩷", "💓"],
   count = 60,
   className = "",
+  speed = 7,
 }: Props) {
-  const drops = useMemo(
-    () =>
-      Array.from({ length: count }, (_, i) => ({
+  // Uniform waterfall: evenly spaced columns, identical speed, staggered start
+  const drops = useMemo(() => {
+    return Array.from({ length: count }, (_, i) => {
+      const col = (i / count) * 100;
+      const jitter = (Math.random() - 0.5) * (100 / count) * 0.6;
+      return {
         id: i,
-        left: Math.random() * 100,
-        size: Math.random() * 22 + 14,
-        delay: Math.random() * 6,
-        duration: Math.random() * 4 + 4,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        opacity: Math.random() * 0.5 + 0.5,
-      })),
-    [count, emojis]
-  );
+        left: col + jitter,
+        size: 20,
+        // stagger across the duration so the stream is continuous & uniform
+        delay: -((i / count) * speed) - Math.random() * 0.3,
+        emoji: emojis[i % emojis.length],
+      };
+    });
+  }, [count, emojis, speed]);
 
   return (
     <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
@@ -35,9 +39,8 @@ export function EmojiRain({
             left: `${d.left}%`,
             top: 0,
             fontSize: `${d.size}px`,
-            opacity: d.opacity,
-            animation: `fall ${d.duration}s linear ${d.delay}s infinite`,
-            filter: "drop-shadow(0 0 8px rgba(255,150,180,0.5))",
+            animation: `fall ${speed}s linear ${d.delay}s infinite`,
+            filter: "drop-shadow(0 0 8px rgba(255,150,180,0.55))",
           }}
         >
           {d.emoji}
