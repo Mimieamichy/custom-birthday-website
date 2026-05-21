@@ -7,10 +7,10 @@ export function SceneCountdown({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (step < 4) {
-      const t = setTimeout(() => setStep(step + 1), step === 3 ? 2800 : 900);
+      const t = setTimeout(() => setStep(step + 1), step === 3 ? 5500 : 1500);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(onDone, 200);
+    const t = setTimeout(onDone, 400);
     return () => clearTimeout(t);
   }, [step, onDone]);
 

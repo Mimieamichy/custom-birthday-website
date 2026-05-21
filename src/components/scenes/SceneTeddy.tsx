@@ -5,8 +5,8 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setShowText(true), 1400);
-    const t2 = setTimeout(onDone, 7000);
+    const t1 = setTimeout(() => setShowText(true), 2000);
+    const t2 = setTimeout(onDone, 12000);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);

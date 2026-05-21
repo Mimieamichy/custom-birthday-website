@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import img1 from "@/assets/memory-1.jpg";
 import img2 from "@/assets/memory-2.jpg";
@@ -18,40 +18,19 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
   const [opened, setOpened] = useState(false);
   const [page, setPage] = useState(0);
   const [closing, setClosing] = useState(false);
-  const x = useMotionValue(0);
-  const coverRotate = useTransform(x, [0, 240], [0, -160]);
-  const coverOpacity = useTransform(x, [0, 200, 240], [1, 0.5, 0]);
 
-  const handleDragEnd = () => {
-    if (x.get() > 120) {
-      animate(x, 260, { duration: 0.6, ease: [0.22, 1, 0.36, 1] });
-      setTimeout(() => setOpened(true), 500);
-    } else {
-      animate(x, 0, { duration: 0.4 });
-    }
-  };
-
-  const next = () => {
-    if (page < spreads.length - 1) setPage(page + 1);
-    else {
-      setClosing(true);
-      setTimeout(onDone, 1800);
-    }
-  };
-
+  // Auto-advance pages slowly so users can read & enjoy
   useEffect(() => {
-    if (!opened) return;
-    const t = setInterval(() => {
-      setPage((p) => {
-        if (p < spreads.length - 1) return p + 1;
-        clearInterval(t);
+    if (!opened || closing) return;
+    const t = setTimeout(() => {
+      if (page < spreads.length - 1) setPage(page + 1);
+      else {
         setClosing(true);
-        setTimeout(onDone, 1800);
-        return p;
-      });
-    }, 4200);
-    return () => clearInterval(t);
-  }, [opened, onDone]);
+        setTimeout(onDone, 2400);
+      }
+    }, 6500);
+    return () => clearTimeout(t);
+  }, [opened, page, closing, onDone]);
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a0a14] via-[#28101e] to-[#0f0610] px-6">
@@ -64,7 +43,7 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
           <motion.div
             initial={{ rotateY: 0, opacity: 1 }}
             animate={{ rotateY: -180, opacity: 0 }}
-            transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0 bg-gradient-to-br from-rose-900 to-pink-950"
             style={{ transformStyle: "preserve-3d" }}
           />
@@ -72,54 +51,56 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
       </AnimatePresence>
 
       {!opened ? (
-        <div className="relative" style={{ perspective: 1200 }}>
-          <div className="relative h-[60vh] max-h-[520px] aspect-[3/4] rounded-r-lg bg-pink-100/5">
-            {/* book back (peek) */}
-            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-rose-800 to-pink-900 shadow-elegant" />
-            <div className="absolute inset-4 rounded-md bg-[#f5e6d3]/95 flex items-center justify-center p-6 text-center">
-              <p className="font-display italic text-rose-900 text-2xl">Open to begin…</p>
-            </div>
-
-            {/* draggable cover */}
-            <motion.div
-              drag="x"
-              dragConstraints={{ left: 0, right: 260 }}
-              dragElastic={0.1}
-              onDragEnd={handleDragEnd}
-              style={{
-                x,
-                rotateY: coverRotate,
-                opacity: coverOpacity,
-                transformOrigin: "left center",
-                transformStyle: "preserve-3d",
-              }}
-              className="absolute inset-0 rounded-lg cursor-grab active:cursor-grabbing bg-gradient-to-br from-rose-700 via-rose-800 to-pink-950 shadow-glow ring-1 ring-pink-300/30 flex flex-col items-center justify-center p-8 text-center"
+        <motion.button
+          onClick={() => setOpened(true)}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          className="relative h-[60vh] max-h-[520px] aspect-[3/4] rounded-lg cursor-pointer"
+          style={{ perspective: 1200 }}
+        >
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-rose-700 via-rose-800 to-pink-950 shadow-glow ring-1 ring-pink-300/30 flex flex-col items-center justify-center p-8 text-center">
+            <div className="absolute inset-3 rounded-md ring-1 ring-pink-200/20" />
+            <motion.span
+              animate={{ scale: [1, 1.12, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity }}
+              className="text-6xl mb-5"
             >
-              <div className="absolute inset-3 rounded-md ring-1 ring-pink-200/20" />
-              <span className="text-5xl mb-4">💝</span>
-              <h2 className="font-display text-3xl md:text-4xl text-pink-50">
-                For Ajebo
-              </h2>
-              <p className="mt-3 font-display italic text-pink-200/90">A little book of you</p>
-              <motion.div
-                animate={{ x: [0, 18, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity }}
-                className="mt-12 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-pink-100/80"
-              >
-                Slide to view content →
-              </motion.div>
+              💝
+            </motion.span>
+            <h2 className="font-display text-3xl md:text-4xl text-pink-50">For Ajebo</h2>
+            <p className="mt-3 font-display italic text-pink-200/90">A little book of you</p>
+            <motion.div
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="mt-10 text-xs uppercase tracking-[0.3em] text-pink-100/90"
+            >
+              Tap to view content
             </motion.div>
           </div>
-        </div>
+        </motion.button>
       ) : (
-        <div className="relative w-full max-w-5xl" style={{ perspective: 1500 }}>
+        <div
+          className="relative w-full max-w-5xl cursor-pointer"
+          style={{ perspective: 1500 }}
+          onClick={() => {
+            if (closing) return;
+            if (page < spreads.length - 1) setPage(page + 1);
+            else {
+              setClosing(true);
+              setTimeout(onDone, 2400);
+            }
+          }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={page}
               initial={{ rotateY: 90, opacity: 0 }}
               animate={{ rotateY: 0, opacity: 1 }}
               exit={{ rotateY: -90, opacity: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
               className="grid grid-cols-1 md:grid-cols-2 rounded-xl overflow-hidden shadow-elegant bg-[#f5e6d3]"
               style={{ transformStyle: "preserve-3d", minHeight: "60vh" }}
             >
@@ -135,12 +116,9 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
                 <p className="mt-6 font-display italic text-lg md:text-xl leading-relaxed text-rose-900/90">
                   {spreads[page].text}
                 </p>
-                <button
-                  onClick={next}
-                  className="mt-8 self-start rounded-full bg-rose-800 px-6 py-2 text-sm text-pink-50 hover:bg-rose-700 transition"
-                >
-                  {page === spreads.length - 1 ? "Close book ♥" : "Next page →"}
-                </button>
+                <p className="mt-8 text-[10px] uppercase tracking-[0.3em] text-rose-700/70">
+                  {page === spreads.length - 1 ? "Tap to close ♥" : "Tap anywhere to turn the page →"}
+                </p>
               </div>
             </motion.div>
           </AnimatePresence>

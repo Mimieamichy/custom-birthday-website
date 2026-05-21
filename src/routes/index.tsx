@@ -5,7 +5,6 @@ import { SceneCountdown } from "@/components/scenes/SceneCountdown";
 import { SceneTeddy } from "@/components/scenes/SceneTeddy";
 import { ScenePhotobook } from "@/components/scenes/ScenePhotobook";
 import { SceneFinale } from "@/components/scenes/SceneFinale";
-import { MusicToggle } from "@/components/MusicToggle";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -25,29 +24,41 @@ export const Route = createFileRoute("/")({
 
 const SCENES = ["countdown", "teddy", "photobook", "finale"] as const;
 
+// Multiple fallbacks so at least one plays
+const SONG_SOURCES = [
+  "https://cdn.pixabay.com/audio/2022/10/30/audio_347758af69.mp3",
+  "https://cdn.pixabay.com/audio/2023/05/15/audio_56e3d6df88.mp3",
+  "https://cdn.pixabay.com/audio/2022/08/02/audio_2dde668d05.mp3",
+];
+
 function Index() {
   const [started, setStarted] = useState(false);
   const [sceneIndex, setSceneIndex] = useState(0);
+  const [muted, setMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    const a = new Audio("https://cdn.pixabay.com/audio/2022/10/30/audio_347758af69.mp3");
-    a.loop = true;
-    a.volume = 0.45;
-    audioRef.current = a;
-    return () => a.pause();
-  }, []);
 
   const start = () => {
     setStarted(true);
-    audioRef.current?.play().catch(() => {});
+    const a = audioRef.current;
+    if (a) {
+      a.muted = false;
+      a.volume = 0.5;
+      a.play().catch((err) => console.warn("audio play blocked", err));
+    }
   };
 
   const next = () => setSceneIndex((i) => Math.min(i + 1, SCENES.length - 1));
-  const prev = () => setSceneIndex((i) => Math.max(i - 1, 0));
   const restart = () => {
     setSceneIndex(0);
     audioRef.current?.play().catch(() => {});
+  };
+
+  const toggleMute = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    a.muted = !a.muted;
+    setMuted(a.muted);
+    if (!a.muted) a.play().catch(() => {});
   };
 
   const scene = SCENES[sceneIndex];
@@ -55,7 +66,31 @@ function Index() {
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-background text-foreground">
-      <MusicToggle />
+      {/* Single audio element with multiple sources for reliability */}
+      <audio ref={audioRef} loop preload="auto" playsInline crossOrigin="anonymous">
+        {SONG_SOURCES.map((src) => (
+          <source key={src} src={src} type="audio/mpeg" />
+        ))}
+      </audio>
+
+      {started && (
+        <button
+          onClick={toggleMute}
+          aria-label={muted ? "Unmute music" : "Mute music"}
+          className="glass-strong fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full text-pink-100 hover:bg-pink-500/20 transition"
+        >
+          {muted ? (
+            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+              <path d="M16.5 12l3.5-3.5-1.4-1.4L15.1 10.6 11.6 7.1V17l3.5-3.5 3.5 3.5 1.4-1.4z" />
+              <path d="M3 9v6h4l5 5V4L7 9z" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1-3.29-2.5-4.03v8.05c1.5-.73 2.5-2.25 2.5-4.02z" />
+            </svg>
+          )}
+        </button>
+      )}
 
       {!started ? (
         <motion.div
@@ -77,7 +112,7 @@ function Index() {
             A surprise for Ajebo
           </h1>
           <p className="mt-4 max-w-md text-pink-200/70">
-            Turn your sound up. Press play and let it unfold.
+            Turn your sound up, sit back, and let it unfold.
           </p>
           <button
             onClick={start}
@@ -94,7 +129,7 @@ function Index() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0"
             >
               {scene === "countdown" && <SceneCountdown onDone={next} />}
@@ -104,38 +139,22 @@ function Index() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Scene navigation */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3">
-            <button
-              onClick={prev}
-              disabled={sceneIndex === 0}
-              className="glass-strong rounded-full px-4 py-2 text-xs uppercase tracking-[0.2em] text-pink-100 disabled:opacity-30 hover:bg-pink-500/10 transition"
-            >
-              ← Prev
-            </button>
-            <div className="flex gap-1.5">
-              {SCENES.map((_, i) => (
-                <span
-                  key={i}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === sceneIndex ? "w-8 bg-pink-300" : "w-1.5 bg-pink-100/30"
-                  }`}
-                />
-              ))}
-            </div>
-            {isLast ? (
+          {/* Subtle progress dots — no nav buttons, let users enjoy */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1.5">
+            {SCENES.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-700 ${
+                  i === sceneIndex ? "w-8 bg-pink-300" : "w-1.5 bg-pink-100/30"
+                }`}
+              />
+            ))}
+            {isLast && (
               <button
                 onClick={restart}
-                className="glass-strong rounded-full px-4 py-2 text-xs uppercase tracking-[0.2em] text-pink-100 hover:bg-pink-500/10 transition"
+                className="ml-4 glass-strong rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.3em] text-pink-100 hover:bg-pink-500/10 transition"
               >
                 ↻ Replay
-              </button>
-            ) : (
-              <button
-                onClick={next}
-                className="glass-strong rounded-full px-4 py-2 text-xs uppercase tracking-[0.2em] text-pink-100 hover:bg-pink-500/10 transition"
-              >
-                Next →
               </button>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { EmojiRain } from "@/components/EmojiRain";
 import img1 from "@/assets/memory-1.jpg";
 import img2 from "@/assets/memory-2.jpg";
@@ -8,78 +8,75 @@ import img4 from "@/assets/memory-4.jpg";
 import img5 from "@/assets/memory-5.jpg";
 import img6 from "@/assets/memory-6.jpg";
 
-// Heart-shaped lattice positions (percent within 600x600 box)
-const heartPositions = [
-  { x: 30, y: 18 }, { x: 50, y: 12 }, { x: 70, y: 18 },
-  { x: 18, y: 32 }, { x: 38, y: 30 }, { x: 62, y: 30 }, { x: 82, y: 32 },
-  { x: 28, y: 50 }, { x: 50, y: 48 }, { x: 72, y: 50 },
-  { x: 40, y: 68 }, { x: 60, y: 68 },
-];
-const imgs = [img1, img2, img3, img4, img5, img6, img1, img2, img3, img4, img5, img6];
+const imgs = [img1, img2, img3, img4, img5, img6];
+
+// Parametric heart curve sampled into a tile grid.
+// Returns positions in percent (centered around 50,50).
+function buildHeartPositions(rings: number, perRing: number) {
+  const pts: { x: number; y: number }[] = [];
+  for (let r = 1; r <= rings; r++) {
+    const scale = r / rings; // 0..1
+    const count = Math.max(6, Math.round(perRing * scale));
+    for (let i = 0; i < count; i++) {
+      const t = (i / count) * Math.PI * 2;
+      const hx = 16 * Math.pow(Math.sin(t), 3);
+      const hy =
+        13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t);
+      // normalize (~ -17..17 for x, -12..15 for y) to percent (-1..1)
+      const nx = (hx / 17) * scale;
+      const ny = (-hy / 15) * scale; // flip y for screen
+      pts.push({ x: 50 + nx * 42, y: 50 + ny * 42 });
+    }
+  }
+  return pts;
+}
 
 export function SceneFinale({ onDone }: { onDone: () => void }) {
+  const positions = useMemo(() => buildHeartPositions(4, 18), []);
+
   useEffect(() => {
-    const t = setTimeout(onDone, 9000);
+    const t = setTimeout(onDone, 14000);
     return () => clearTimeout(t);
   }, [onDone]);
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#1a0a14] via-[#28101e] to-[#1a0a14] overflow-hidden">
       <EmojiRain
-        count={80}
+        count={90}
+        speed={8}
         emojis={["❤️", "💛", "💚", "💙", "💜", "🧡", "🩷", "🤍", "💖"]}
       />
 
       <motion.div
         className="absolute h-[80vh] w-[80vh] rounded-full bg-pink-500/15 blur-[120px]"
         animate={{ scale: [0.9, 1.2, 0.9] }}
-        transition={{ duration: 6, repeat: Infinity }}
+        transition={{ duration: 8, repeat: Infinity }}
       />
 
-      <div className="relative mx-auto aspect-square w-[min(86vh,86vw)]">
-        {/* heart glow */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.8 }}
-          className="absolute inset-0"
-        >
-          <svg viewBox="0 0 100 100" className="h-full w-full">
-            <defs>
-              <radialGradient id="finaleHeart" cx="50%" cy="40%">
-                <stop offset="0%" stopColor="rgba(255,120,170,0.6)" />
-                <stop offset="100%" stopColor="rgba(255,80,140,0)" />
-              </radialGradient>
-            </defs>
-            <path
-              d="M50,88 C50,88 8,60 8,32 C8,18 18,8 32,8 C40,8 46,12 50,20 C54,12 60,8 68,8 C82,8 92,18 92,32 C92,60 50,88 50,88 Z"
-              fill="url(#finaleHeart)"
-            />
-          </svg>
-        </motion.div>
-
-        {heartPositions.map((pos, i) => (
+      <div className="relative mx-auto aspect-square w-[min(86vh,90vw)]">
+        {positions.map((pos, i) => (
           <motion.div
             key={i}
             initial={{
               opacity: 0,
               scale: 0,
-              x: (Math.random() - 0.5) * 800,
-              y: (Math.random() - 0.5) * 800,
+              x: (Math.random() - 0.5) * 900,
+              y: (Math.random() - 0.5) * 900,
               rotate: Math.random() * 360 - 180,
-              borderRadius: "50%",
             }}
             animate={{
               opacity: 1,
               scale: 1,
               x: 0,
               y: 0,
-              rotate: (i % 2 === 0 ? -1 : 1) * 4,
-              borderRadius: "18%",
+              rotate: (i % 2 === 0 ? -1 : 1) * 3,
             }}
             transition={{
-              duration: 1.6,
-              delay: 0.4 + i * 0.12,
+              duration: 2.4,
+              delay: 0.4 + i * 0.06,
               ease: [0.22, 1, 0.36, 1],
             }}
             className="absolute"
@@ -89,9 +86,12 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="h-16 w-16 md:h-24 md:w-24 overflow-hidden shadow-glow ring-1 ring-pink-300/50 rounded-2xl">
-              <img src={imgs[i]} alt="" className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-rose-600/30 to-transparent" />
+            <div className="h-10 w-10 md:h-14 md:w-14 overflow-hidden rounded-lg ring-1 ring-pink-300/40 shadow-[0_0_18px_rgba(255,120,170,0.4)]">
+              <img
+                src={imgs[i % imgs.length]}
+                alt=""
+                className="h-full w-full object-cover"
+              />
             </div>
           </motion.div>
         ))}
@@ -100,7 +100,7 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 3, duration: 1.4 }}
+        transition={{ delay: 5, duration: 2 }}
         className="absolute bottom-12 left-0 right-0 text-center px-6"
       >
         <h2
