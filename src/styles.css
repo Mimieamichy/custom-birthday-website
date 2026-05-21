@@ -146,8 +146,27 @@
   90% { opacity: 1; }
   100% { transform: translateY(-10vh) translateX(40px) scale(1); opacity: 0; }
 }
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0.8; }
+}
+@keyframes strum {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(12deg); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
 
 .animate-float-soft { animation: float-soft 6s ease-in-out infinite; }
 .animate-heart-pulse { animation: heart-pulse 2s ease-in-out infinite; }
 .animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
 .animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
+.animate-strum { animation: strum 0.4s ease-in-out infinite; transform-origin: top right; }
+.animate-sway { animation: sway 3s ease-in-out infinite; transform-origin: bottom center; }
+
