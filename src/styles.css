@@ -89,8 +89,9 @@
     font-family: var(--font-sans);
     background-image: var(--gradient-romantic);
     background-attachment: fixed;
-    overflow-x: hidden;
+    overflow: hidden;
   }
+
   ::selection { background: oklch(0.65 0.24 18 / 0.4); color: white; }
 }
 
