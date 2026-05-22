@@ -28,20 +28,23 @@ A cinematic, interactive birthday celebration experience built for **Ajebo**. Th
 
 ## 🚀 Deployment
 
-### Recommended: Cloudflare Pages
-This project is optimized for Cloudflare Pages.
-1. Connect your GitHub repo to **Cloudflare Pages**.
+### Vercel (Recommended)
+This project is now configured as a standard Single Page Application (SPA), which works perfectly with Vercel.
+1. Connect your GitHub repo to **Vercel**.
+2. Vercel will automatically detect the **Vite** preset.
+3. Settings:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Click **Deploy**.
+
+### Cloudflare Pages
+You can also deploy to Cloudflare Pages:
+1. Connect your repo.
 2. Settings:
    - **Build Command**: `npm run build`
-   - **Output Directory**: `dist/client`
-3. The server-side logic will be handled by Cloudflare Workers automatically.
-
-### Vercel
-If you prefer Vercel, ensure you have the following settings:
-- **Framework Preset**: `Other`
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist/client`
-- Note: You may need to configure a `vercel.json` (included) for proper routing.
+   - **Output Directory**: `dist`
+3. Compatibility flag: `nodejs_compat` (if needed).
 
 ## 📂 Project Structure
 
