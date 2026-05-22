@@ -113,35 +113,35 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
                   setTimeout(onDone, 2000);
                 }
               }}
-              className="relative z-10 w-full max-w-md cursor-pointer flex flex-col gap-3"
+              className="relative z-10 w-full max-w-md md:max-w-4xl cursor-pointer flex flex-col md:grid md:grid-cols-2 md:items-stretch gap-3 md:gap-5"
               style={{ perspective: 1500 }}
             >
               <div
-                className="relative rounded-2xl px-5 py-5 text-center shadow-lg"
+                className="relative rounded-2xl px-5 py-5 md:px-8 md:py-10 text-center md:flex md:flex-col md:justify-center shadow-lg"
                 style={{ background: "linear-gradient(180deg,#fdf5ea 0%, #f6e6d1 100%)" }}
               >
                 <p
-                  className="text-lg md:text-xl mb-2"
+                  className="text-lg md:text-3xl mb-2 md:mb-4"
                   style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", color: "#c4634a" }}
                 >
                   {spreads[page].title}
                 </p>
                 <p
-                  className="text-[13px] md:text-sm leading-relaxed whitespace-pre-line"
+                  className="text-[13px] md:text-base leading-relaxed whitespace-pre-line"
                   style={{ fontFamily: "'Cormorant Garamond', serif", color: "#6b3a2a" }}
                 >
                   {spreads[page].body}
                 </p>
-                <span className="absolute right-3 top-3 text-pink-400 text-xs">💕</span>
+                <span className="absolute right-3 top-3 text-pink-400 text-xs md:text-base">💕</span>
               </div>
 
-              <div className="rounded-2xl overflow-hidden bg-white p-2 shadow-[0_20px_60px_rgba(255,150,200,0.25)]">
-                <div className="aspect-[4/5] overflow-hidden rounded-lg">
+              <div className="rounded-2xl overflow-hidden bg-white p-2 md:p-3 shadow-[0_20px_60px_rgba(255,150,200,0.25)]">
+                <div className="aspect-[4/5] md:h-full overflow-hidden rounded-lg">
                   <img src={spreads[page].img} alt="" className="h-full w-full object-cover" />
                 </div>
               </div>
 
-              <p className="text-center text-[10px] uppercase tracking-[0.3em] text-pink-200/60">
+              <p className="md:col-span-2 text-center text-[10px] uppercase tracking-[0.3em] text-pink-200/60">
                 Page {page + 1} / {spreads.length} · tap to turn
               </p>
             </motion.div>
