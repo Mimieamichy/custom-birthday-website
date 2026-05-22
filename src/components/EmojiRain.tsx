@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function EmojiRain({
-  emojis = ["💖", "💕", "🌸", "💗", "🩷", "💓"],
+  emojis = ["�", "�", "❄️", "🧊", "🌊", "�"],
   count = 60,
   className = "",
   speed = 7,
@@ -40,7 +40,7 @@ export function EmojiRain({
             top: 0,
             fontSize: `${d.size}px`,
             animation: `fall ${speed}s linear ${d.delay}s infinite`,
-            filter: "drop-shadow(0 0 8px rgba(255,150,180,0.55))",
+            filter: "drop-shadow(0 0 8px rgba(0,191,255,0.55))",
           }}
         >
           {d.emoji}

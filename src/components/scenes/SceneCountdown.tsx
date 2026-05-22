@@ -34,11 +34,11 @@ export function SceneCountdown({ onDone }: { onDone: () => void }) {
             className="relative z-10 px-6 text-center font-extrabold tracking-tight"
             style={{
               fontFamily: "Inter, system-ui, sans-serif",
-              color: "#ff6fb5",
+              color: "#6fb5ff",
               fontSize: isNum ? "clamp(8rem, 28vw, 22rem)" : "clamp(4rem, 16vw, 14rem)",
               textShadow:
-                "0 0 30px rgba(255,80,160,0.95), 0 0 60px rgba(255,60,140,0.7), 0 0 100px rgba(255,40,120,0.5)",
-              WebkitTextStroke: "2px rgba(255,180,210,0.6)",
+                "0 0 30px rgba(80,160,255,0.95), 0 0 60px rgba(60,140,255,0.7), 0 0 100px rgba(40,120,255,0.5)",
+              WebkitTextStroke: "2px rgba(180,210,255,0.6)",
             }}
           >
             {current}

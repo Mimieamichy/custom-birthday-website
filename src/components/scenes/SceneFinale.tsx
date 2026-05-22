@@ -43,10 +43,10 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
     <div className="absolute inset-0 flex items-center justify-center bg-[#050816] overflow-hidden">
       <StarField count={160} />
 
-      {/* Pink glow behind heart */}
+      {/* Blue glow behind heart */}
       <motion.div
         className="absolute h-[70vh] w-[70vh] rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(255,90,170,0.35), transparent 60%)" }}
+        style={{ background: "radial-gradient(circle, rgba(0,191,255,0.35), transparent 60%)" }}
         animate={{ scale: [0.9, 1.1, 0.9], opacity: [0.6, 1, 0.6] }}
         transition={{ duration: 4, repeat: Infinity }}
       />
@@ -88,7 +88,7 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
                 width: "clamp(38px, 8vw, 78px)",
                 height: "clamp(48px, 10vw, 96px)",
                 boxShadow:
-                  "0 0 14px rgba(255,90,170,0.9), 0 0 30px rgba(255,60,140,0.5)",
+                  "0 0 14px rgba(0,191,255,0.9), 0 0 30px rgba(0,122,255,0.5)",
               }}
             >
               <img
@@ -108,10 +108,10 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
         className="absolute top-10 left-0 right-0 text-center px-6 z-20"
       >
         <h2
-          className="font-display text-3xl md:text-5xl text-pink-100"
-          style={{ textShadow: "0 0 30px rgba(255,140,180,0.9)" }}
+          className="font-display text-3xl md:text-5xl text-blue-100"
+          style={{ textShadow: "0 0 30px rgba(0,191,255,0.9)" }}
         >
-          You are so loved, Ajebo 💖
+          You are so loved, Ajebo 💙
         </h2>
       </motion.div>
     </div>

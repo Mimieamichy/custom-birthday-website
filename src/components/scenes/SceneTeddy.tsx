@@ -6,9 +6,9 @@ import { pauseBgMusic, resumeBgMusic } from "@/lib/bgMusic";
 
 const LETTERS = "HAPPY BIRTHDAY".split("");
 const CANDLE_COLORS = [
-  "#ff6b6b", "#ffb347", "#ffd93d", "#6bcf7f", "#4dabf7",
-  "#9775fa", "#ff8cc8",
-  "#ff6b6b", "#ffb347", "#ffd93d", "#6bcf7f", "#4dabf7", "#9775fa", "#ff8cc8",
+  "#4dabf7", "#3bc9db", "#38d9a9", "#6bcf7f", "#4dabf7",
+  "#9775fa", "#748ffc",
+  "#4dabf7", "#3bc9db", "#38d9a9", "#6bcf7f", "#4dabf7", "#9775fa", "#748ffc",
 ];
 
 export function SceneTeddy({ onDone }: { onDone: () => void }) {
@@ -50,8 +50,8 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
               <span
                 className="block h-3 w-2 rounded-full"
                 style={{
-                  background: "radial-gradient(circle, #fff7a8 0%, #ffb84d 60%, transparent 100%)",
-                  boxShadow: "0 0 12px #ffd700, 0 0 24px #ff9d2e",
+                  background: "radial-gradient(circle, #a8f7ff 0%, #4db8ff 60%, transparent 100%)",
+                  boxShadow: "0 0 12px #00d7ff, 0 0 24px #2e9dff",
                   animation: `candleFlicker ${0.6 + Math.random() * 0.6}s ease-in-out ${i * 0.1}s infinite`,
                 }}
               />
@@ -83,8 +83,8 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
           {/* ears */}
           <path d="M70 60 L80 25 L100 55 Z" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
           <path d="M150 60 L140 25 L120 55 Z" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
-          <path d="M78 50 L84 35 L94 52 Z" fill="#ffb6c1" />
-          <path d="M142 50 L136 35 L126 52 Z" fill="#ffb6c1" />
+          <path d="M78 50 L84 35 L94 52 Z" fill="#b6e1ff" />
+          <path d="M142 50 L136 35 L126 52 Z" fill="#b6e1ff" />
 
           {/* head */}
           <circle cx="110" cy="80" r="48" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
@@ -92,10 +92,10 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
           <path d="M88 78 Q94 72 100 78" stroke="#222" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           <path d="M120 78 Q126 72 132 78" stroke="#222" strokeWidth="2.5" fill="none" strokeLinecap="round" />
           {/* cheeks */}
-          <circle cx="86" cy="92" r="5" fill="#ffb6c1" opacity="0.7" />
-          <circle cx="134" cy="92" r="5" fill="#ffb6c1" opacity="0.7" />
+          <circle cx="86" cy="92" r="5" fill="#b6e1ff" opacity="0.7" />
+          <circle cx="134" cy="92" r="5" fill="#b6e1ff" opacity="0.7" />
           {/* nose */}
-          <path d="M107 88 L113 88 L110 92 Z" fill="#ff8aa8" />
+          <path d="M107 88 L113 88 L110 92 Z" fill="#8ab6ff" />
           {/* mouth */}
           <path d="M104 95 Q110 100 116 95" stroke="#222" strokeWidth="2" fill="none" strokeLinecap="round" />
           {/* whiskers */}

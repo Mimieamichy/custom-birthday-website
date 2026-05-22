@@ -10,7 +10,7 @@ A cinematic, interactive birthday celebration experience built for **Ajebo**. Th
   - **Memory Photobook**: A beautiful gallery of shared moments and photos.
   - **The Finale**: A grand celebratory ending with a heart-shaped collage.
 - **Interactive Elements**:
-  - Emoji rainfall and particle effects.
+  - Blue emoji rainfall and particle effects.
   - Floating photos and dynamic animations.
   - Matrix-style rain effects.
 - **Immersive Audio**: Integrated background music and birthday songs with user-controlled playback.

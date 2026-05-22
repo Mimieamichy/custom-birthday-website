@@ -29,8 +29,8 @@ const spreads: { img: string; title: string; body: string }[] = [
   },
   {
     img: img1,
-    title: "Happy Birthday, Ajebo! 🌹",
-    body: "Love you always,\nMami 🌹",
+    title: "Happy Birthday, Ajebo! 💎",
+    body: "Love you always,\nMami 💎",
   },
 ];
 
@@ -63,36 +63,36 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
-          className="relative z-10 h-[58vh] max-h-[520px] aspect-[3/4] rounded-md bg-white shadow-[0_20px_60px_rgba(255,150,200,0.25)] cursor-pointer flex flex-col items-center justify-end pb-10"
+          className="relative z-10 h-[58vh] max-h-[520px] aspect-[3/4] rounded-md bg-white shadow-[0_20px_60px_rgba(0,191,255,0.25)] cursor-pointer flex flex-col items-center justify-end pb-10"
         >
-          <div className="absolute top-10 flex gap-3 text-pink-300">
-            <span>♥</span><span>♥</span><span>♥</span>
+          <div className="absolute top-10 flex gap-3 text-blue-300">
+            <span>💙</span><span>💙</span><span>💙</span>
           </div>
           <svg viewBox="0 0 200 140" className="w-3/4">
             <motion.path
               d="M100 50 C100 50 78 32 64 42 C50 52 56 72 100 96 C144 72 150 52 136 42 C122 32 100 50 100 50 Z"
-              fill="#ff5d7a"
+              fill="#007aff"
               animate={{ scale: [1, 1.08, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
               style={{ transformOrigin: "100px 65px" }}
             />
             <g>
-              <ellipse cx="55" cy="115" rx="28" ry="20" fill="#ffe0d0" stroke="#ffb89a" strokeWidth="1.5" />
+              <ellipse cx="55" cy="115" rx="28" ry="20" fill="#e0f5ff" stroke="#9acbff" strokeWidth="1.5" />
               {[0,1,2,3,4].map((f) => (
-                <ellipse key={f} cx={35 + f * 10} cy={95 + f * 2} rx="5" ry="11" fill="#ffe0d0" stroke="#ffb89a" strokeWidth="1.5" />
+                <ellipse key={f} cx={35 + f * 10} cy={95 + f * 2} rx="5" ry="11" fill="#e0f5ff" stroke="#9acbff" strokeWidth="1.5" />
               ))}
             </g>
             <g>
-              <ellipse cx="145" cy="115" rx="28" ry="20" fill="#ffe0d0" stroke="#ffb89a" strokeWidth="1.5" />
+              <ellipse cx="145" cy="115" rx="28" ry="20" fill="#e0f5ff" stroke="#9acbff" strokeWidth="1.5" />
               {[0,1,2,3,4].map((f) => (
-                <ellipse key={f} cx={125 + f * 10} cy={95 + (4-f) * 2} rx="5" ry="11" fill="#ffe0d0" stroke="#ffb89a" strokeWidth="1.5" />
+                <ellipse key={f} cx={125 + f * 10} cy={95 + (4-f) * 2} rx="5" ry="11" fill="#e0f5ff" stroke="#9acbff" strokeWidth="1.5" />
               ))}
             </g>
           </svg>
           <motion.div
             animate={{ opacity: [0.4, 1, 0.4] }}
             transition={{ duration: 2.2, repeat: Infinity }}
-            className="absolute bottom-4 left-0 right-0 text-center text-[10px] uppercase tracking-[0.35em] text-rose-400"
+            className="absolute bottom-4 left-0 right-0 text-center text-[10px] uppercase tracking-[0.35em] text-blue-400"
           >
             Tap to view content
           </motion.div>
@@ -118,30 +118,30 @@ export function ScenePhotobook({ onDone }: { onDone: () => void }) {
             >
               <div
                 className="relative rounded-2xl px-5 py-5 md:px-8 md:py-10 text-center md:flex md:flex-col md:justify-center shadow-lg"
-                style={{ background: "linear-gradient(180deg,#fdf5ea 0%, #f6e6d1 100%)" }}
+                style={{ background: "linear-gradient(180deg,#eaf5fd 0%, #d1e6f6 100%)" }}
               >
                 <p
                   className="text-lg md:text-3xl mb-2 md:mb-4"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", color: "#c4634a" }}
+                  style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", color: "#2a6b8b" }}
                 >
                   {spreads[page].title}
                 </p>
                 <p
                   className="text-[13px] md:text-base leading-relaxed whitespace-pre-line"
-                  style={{ fontFamily: "'Cormorant Garamond', serif", color: "#6b3a2a" }}
+                  style={{ fontFamily: "'Cormorant Garamond', serif", color: "#2a4a6b" }}
                 >
                   {spreads[page].body}
                 </p>
-                <span className="absolute right-3 top-3 text-pink-400 text-xs md:text-base">💕</span>
+                <span className="absolute right-3 top-3 text-blue-400 text-xs md:text-base">💙</span>
               </div>
 
-              <div className="rounded-2xl overflow-hidden bg-white p-2 md:p-3 shadow-[0_20px_60px_rgba(255,150,200,0.25)]">
+              <div className="rounded-2xl overflow-hidden bg-white p-2 md:p-3 shadow-[0_20px_60px_rgba(0,191,255,0.25)]">
                 <div className="aspect-[4/5] md:h-full overflow-hidden rounded-lg">
                   <img src={spreads[page].img} alt="" className="h-full w-full object-cover" />
                 </div>
               </div>
 
-              <p className="md:col-span-2 text-center text-[10px] uppercase tracking-[0.3em] text-pink-200/60">
+              <p className="md:col-span-2 text-center text-[10px] uppercase tracking-[0.3em] text-blue-200/60">
                 Page {page + 1} / {spreads.length} · tap to turn
               </p>
             </motion.div>
