@@ -102,10 +102,10 @@ export function SceneFinale({ onDone }: { onDone: () => void }) {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 6, duration: 2 }}
-        className="absolute bottom-14 left-0 right-0 text-center px-6"
+        transition={{ delay: 1.5, duration: 2 }}
+        className="absolute top-10 left-0 right-0 text-center px-6 z-20"
       >
         <h2
           className="font-display text-3xl md:text-5xl text-pink-100"

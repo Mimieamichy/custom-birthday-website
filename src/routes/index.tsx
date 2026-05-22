@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createFileRoute } from "@tanstack/react-router";
 import { SceneCountdown } from "@/components/scenes/SceneCountdown";
 import { SceneTeddy } from "@/components/scenes/SceneTeddy";
 import { ScenePhotobook } from "@/components/scenes/ScenePhotobook";
 import { SceneFinale } from "@/components/scenes/SceneFinale";
+import { startBirthdaySong, setMuted as setSongMuted } from "@/lib/birthdaySong";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,41 +25,26 @@ export const Route = createFileRoute("/")({
 
 const SCENES = ["countdown", "teddy", "photobook", "finale"] as const;
 
-// Multiple fallbacks so at least one plays
-const SONG_SOURCES = [
-  "https://cdn.pixabay.com/audio/2022/10/30/audio_347758af69.mp3",
-  "https://cdn.pixabay.com/audio/2023/05/15/audio_56e3d6df88.mp3",
-  "https://cdn.pixabay.com/audio/2022/08/02/audio_2dde668d05.mp3",
-];
-
 function Index() {
   const [started, setStarted] = useState(false);
   const [sceneIndex, setSceneIndex] = useState(0);
   const [muted, setMuted] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const start = () => {
     setStarted(true);
-    const a = audioRef.current;
-    if (a) {
-      a.muted = false;
-      a.volume = 0.5;
-      a.play().catch((err) => console.warn("audio play blocked", err));
-    }
+    startBirthdaySong();
   };
 
   const next = () => setSceneIndex((i) => Math.min(i + 1, SCENES.length - 1));
   const restart = () => {
     setSceneIndex(0);
-    audioRef.current?.play().catch(() => {});
+    startBirthdaySong();
   };
 
   const toggleMute = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.muted = !a.muted;
-    setMuted(a.muted);
-    if (!a.muted) a.play().catch(() => {});
+    const m = !muted;
+    setMuted(m);
+    setSongMuted(m);
   };
 
   const scene = SCENES[sceneIndex];
@@ -66,12 +52,7 @@ function Index() {
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-background text-foreground">
-      {/* Single audio element with multiple sources for reliability */}
-      <audio ref={audioRef} loop preload="auto" playsInline crossOrigin="anonymous">
-        {SONG_SOURCES.map((src) => (
-          <source key={src} src={src} type="audio/mpeg" />
-        ))}
-      </audio>
+
 
       {started && (
         <button
