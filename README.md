@@ -26,32 +26,22 @@ A cinematic, interactive birthday celebration experience built for **Ajebo**. Th
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Icons**: [Lucide React](https://lucide.dev/)
 
-## 🚀 Getting Started
+## 🚀 Deployment
 
-### Prerequisites
+### Recommended: Cloudflare Pages
+This project is optimized for Cloudflare Pages.
+1. Connect your GitHub repo to **Cloudflare Pages**.
+2. Settings:
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist/client`
+3. The server-side logic will be handled by Cloudflare Workers automatically.
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Mimieamichy/custom-birthday-website.git
-   cd custom-birthday-website
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. Open your browser and navigate to `http://localhost:3000`.
+### Vercel
+If you prefer Vercel, ensure you have the following settings:
+- **Framework Preset**: `Other`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist/client`
+- Note: You may need to configure a `vercel.json` (included) for proper routing.
 
 ## 📂 Project Structure
 
