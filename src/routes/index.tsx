@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { createFileRoute } from "@tanstack/react-router";
 import { SceneCountdown } from "@/components/scenes/SceneCountdown";
 import { SceneTeddy } from "@/components/scenes/SceneTeddy";
 import { ScenePhotobook } from "@/components/scenes/ScenePhotobook";
 import { SceneFinale } from "@/components/scenes/SceneFinale";
+import { startBirthdaySong, stopBirthdaySong, setMuted as setSongMuted } from "@/lib/birthdaySong";
 
 export const Route = createFileRoute("/")({
   component: Index,
