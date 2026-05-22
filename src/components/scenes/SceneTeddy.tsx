@@ -24,7 +24,7 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 mb-2 flex items-end gap-1 md:gap-2"
+        className="relative z-10 mb-2 flex items-end gap-[2px] sm:gap-1 md:gap-2 px-2"
       >
         {LETTERS.map((ch, i) => {
           const color = CANDLE_COLORS[i % CANDLE_COLORS.length];
@@ -49,7 +49,7 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
               />
               {/* candle body letter */}
               <div
-                className="relative flex h-10 w-7 items-center justify-center rounded-sm md:h-14 md:w-10 font-extrabold text-white text-lg md:text-2xl"
+                className="relative flex h-7 w-5 items-center justify-center rounded-sm sm:h-10 sm:w-7 md:h-14 md:w-10 font-extrabold text-white text-[11px] sm:text-lg md:text-2xl"
                 style={{
                   background: `linear-gradient(180deg, ${color} 0%, ${color}dd 60%, ${color}88 100%)`,
                   boxShadow: `0 0 14px ${color}99, inset 0 -6px 8px rgba(0,0,0,0.25)`,
