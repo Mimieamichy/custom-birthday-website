@@ -24,7 +24,7 @@ export function SceneTeddy({ onDone }: { onDone: () => void }) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 mb-2 flex items-end gap-1 md:gap-2"
+        className="relative z-10 mb-2 flex items-end gap-[2px] sm:gap-1 md:gap-2 px-2"
       >
         {LETTERS.map((ch, i) => {
           const color = CANDLE_COLORS[i % CANDLE_COLORS.length];
