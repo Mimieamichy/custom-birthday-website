@@ -1,122 +1,142 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { StarField } from "@/components/StarField";
+
+const LETTERS = "HAPPY BIRTHDAY".split("");
+const CANDLE_COLORS = [
+  "#ff6b6b", "#ffb347", "#ffd93d", "#6bcf7f", "#4dabf7",
+  "#9775fa", "#ff8cc8",
+  "#ff6b6b", "#ffb347", "#ffd93d", "#6bcf7f", "#4dabf7", "#9775fa", "#ff8cc8",
+];
 
 export function SceneTeddy({ onDone }: { onDone: () => void }) {
-  const [showText, setShowText] = useState(false);
-
   useEffect(() => {
-    const t1 = setTimeout(() => setShowText(true), 2000);
-    const t2 = setTimeout(onDone, 12000);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    const t = setTimeout(onDone, 11000);
+    return () => clearTimeout(t);
   }, [onDone]);
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#2a0f1c] via-[#3a1428] to-[#1a0a14] overflow-hidden">
-      {/* notes floating */}
-      {["🎵", "🎶", "🎵", "🎶", "💕", "🎵"].map((n, i) => (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050816] overflow-hidden">
+      <StarField count={150} />
+
+      {/* HAPPY BIRTHDAY arched candle letters */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 mb-2 flex items-end gap-1 md:gap-2"
+      >
+        {LETTERS.map((ch, i) => {
+          const color = CANDLE_COLORS[i % CANDLE_COLORS.length];
+          // arch effect
+          const mid = (LETTERS.length - 1) / 2;
+          const arc = -Math.pow((i - mid) / mid, 2) * 30 + 10;
+          if (ch === " ") return <span key={i} className="w-3 md:w-5" />;
+          return (
+            <div
+              key={i}
+              className="relative flex flex-col items-center"
+              style={{ transform: `translateY(${arc}px)` }}
+            >
+              {/* flame */}
+              <span
+                className="block h-3 w-2 rounded-full"
+                style={{
+                  background: "radial-gradient(circle, #fff7a8 0%, #ffb84d 60%, transparent 100%)",
+                  boxShadow: "0 0 12px #ffd700, 0 0 24px #ff9d2e",
+                  animation: `candleFlicker ${0.6 + Math.random() * 0.6}s ease-in-out ${i * 0.1}s infinite`,
+                }}
+              />
+              {/* candle body letter */}
+              <div
+                className="relative flex h-10 w-7 items-center justify-center rounded-sm md:h-14 md:w-10 font-extrabold text-white text-lg md:text-2xl"
+                style={{
+                  background: `linear-gradient(180deg, ${color} 0%, ${color}dd 60%, ${color}88 100%)`,
+                  boxShadow: `0 0 14px ${color}99, inset 0 -6px 8px rgba(0,0,0,0.25)`,
+                  textShadow: "0 1px 2px rgba(0,0,0,0.4)",
+                  fontFamily: "Inter, system-ui, sans-serif",
+                }}
+              >
+                {ch}
+              </div>
+            </div>
+          );
+        })}
+      </motion.div>
+
+      {/* Cute white cat playing guitar */}
+      <motion.div
+        initial={{ scale: 0.5, opacity: 0, y: 40 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative animate-sway"
+      >
+        <svg viewBox="0 0 220 240" className="h-[38vh] md:h-[46vh] w-auto drop-shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+          {/* ears */}
+          <path d="M70 60 L80 25 L100 55 Z" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+          <path d="M150 60 L140 25 L120 55 Z" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+          <path d="M78 50 L84 35 L94 52 Z" fill="#ffb6c1" />
+          <path d="M142 50 L136 35 L126 52 Z" fill="#ffb6c1" />
+
+          {/* head */}
+          <circle cx="110" cy="80" r="48" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+          {/* eyes closed/happy */}
+          <path d="M88 78 Q94 72 100 78" stroke="#222" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <path d="M120 78 Q126 72 132 78" stroke="#222" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          {/* cheeks */}
+          <circle cx="86" cy="92" r="5" fill="#ffb6c1" opacity="0.7" />
+          <circle cx="134" cy="92" r="5" fill="#ffb6c1" opacity="0.7" />
+          {/* nose */}
+          <path d="M107 88 L113 88 L110 92 Z" fill="#ff8aa8" />
+          {/* mouth */}
+          <path d="M104 95 Q110 100 116 95" stroke="#222" strokeWidth="2" fill="none" strokeLinecap="round" />
+          {/* whiskers */}
+          <line x1="70" y1="92" x2="85" y2="93" stroke="#bbb" strokeWidth="1" />
+          <line x1="70" y1="98" x2="85" y2="97" stroke="#bbb" strokeWidth="1" />
+          <line x1="135" y1="93" x2="150" y2="92" stroke="#bbb" strokeWidth="1" />
+          <line x1="135" y1="97" x2="150" y2="98" stroke="#bbb" strokeWidth="1" />
+
+          {/* body */}
+          <ellipse cx="110" cy="170" rx="48" ry="50" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+          <ellipse cx="110" cy="180" rx="30" ry="34" fill="#fafafa" />
+
+          {/* guitar */}
+          <g transform="translate(110 175)">
+            <ellipse cx="0" cy="0" rx="36" ry="28" fill="#d2691e" stroke="#5c2e0e" strokeWidth="1.5" />
+            <ellipse cx="0" cy="0" rx="28" ry="20" fill="#e6873b" />
+            <circle cx="0" cy="0" r="6" fill="#2a1505" />
+            <rect x="32" y="-4" width="42" height="8" rx="2" fill="#3a1a0a" />
+            <rect x="70" y="-7" width="7" height="14" rx="2" fill="#1a0a05" />
+            <line x1="-15" y1="-2" x2="72" y2="-2" stroke="#f0e0c0" strokeWidth="0.6" />
+            <line x1="-15" y1="0" x2="72" y2="0" stroke="#f0e0c0" strokeWidth="0.6" />
+            <line x1="-15" y1="2" x2="72" y2="2" stroke="#f0e0c0" strokeWidth="0.6" />
+          </g>
+
+          {/* paw on neck */}
+          <ellipse cx="168" cy="170" rx="10" ry="14" fill="#fff" stroke="#ddd" strokeWidth="1.5" transform="rotate(35 168 170)" />
+          {/* paw strumming */}
+          <g className="animate-strum" style={{ transformOrigin: "78px 150px" }}>
+            <ellipse cx="80" cy="178" rx="10" ry="14" fill="#fff" stroke="#ddd" strokeWidth="1.5" transform="rotate(-25 80 178)" />
+          </g>
+
+          {/* feet */}
+          <ellipse cx="88" cy="218" rx="14" ry="9" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+          <ellipse cx="132" cy="218" rx="14" ry="9" fill="#fff" stroke="#ddd" strokeWidth="1.5" />
+        </svg>
+      </motion.div>
+
+      {/* floating notes */}
+      {["♪", "♫", "♩", "♬", "♪"].map((n, i) => (
         <motion.span
           key={i}
-          className="absolute text-3xl"
-          initial={{ y: "60vh", x: `${20 + i * 12}vw`, opacity: 0 }}
-          animate={{ y: "-10vh", opacity: [0, 1, 1, 0] }}
-          transition={{ duration: 5, delay: i * 0.8, repeat: Infinity, ease: "easeOut" }}
+          className="absolute text-2xl text-pink-200/80"
+          initial={{ y: "50vh", x: `${30 + i * 10}vw`, opacity: 0 }}
+          animate={{ y: "-10vh", opacity: [0, 1, 0] }}
+          transition={{ duration: 6, delay: i * 1.1, repeat: Infinity, ease: "easeOut" }}
         >
           {n}
         </motion.span>
       ))}
-
-      <motion.div
-        initial={{ scale: 0.4, opacity: 0, y: 60 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        className="relative animate-sway"
-      >
-        <svg viewBox="0 0 240 280" className="h-[44vh] md:h-[52vh] w-auto drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
-          <defs>
-            <radialGradient id="fur" cx="50%" cy="40%">
-              <stop offset="0%" stopColor="#c8956d" />
-              <stop offset="100%" stopColor="#8b5a3c" />
-            </radialGradient>
-            <radialGradient id="bellyG" cx="50%" cy="50%">
-              <stop offset="0%" stopColor="#e8c4a0" />
-              <stop offset="100%" stopColor="#b8855a" />
-            </radialGradient>
-          </defs>
-
-          {/* ears */}
-          <circle cx="70" cy="55" r="22" fill="url(#fur)" />
-          <circle cx="70" cy="55" r="11" fill="#e8b890" />
-          <circle cx="170" cy="55" r="22" fill="url(#fur)" />
-          <circle cx="170" cy="55" r="11" fill="#e8b890" />
-
-          {/* head */}
-          <circle cx="120" cy="90" r="58" fill="url(#fur)" />
-          {/* muzzle */}
-          <ellipse cx="120" cy="108" rx="28" ry="22" fill="#e8c4a0" />
-          {/* eyes */}
-          <circle cx="100" cy="85" r="6" fill="#1a0a05" />
-          <circle cx="140" cy="85" r="6" fill="#1a0a05" />
-          <circle cx="102" cy="83" r="2" fill="#fff" />
-          <circle cx="142" cy="83" r="2" fill="#fff" />
-          {/* nose */}
-          <ellipse cx="120" cy="102" rx="6" ry="4.5" fill="#1a0a05" />
-          {/* mouth (smile) */}
-          <path d="M110 115 Q120 122 130 115" stroke="#1a0a05" strokeWidth="2" fill="none" strokeLinecap="round" />
-          {/* cheek blush */}
-          <circle cx="88" cy="105" r="6" fill="#ff8aa8" opacity="0.5" />
-          <circle cx="152" cy="105" r="6" fill="#ff8aa8" opacity="0.5" />
-
-          {/* body */}
-          <ellipse cx="120" cy="195" rx="58" ry="58" fill="url(#fur)" />
-          <ellipse cx="120" cy="200" rx="36" ry="40" fill="url(#bellyG)" />
-
-          {/* legs */}
-          <ellipse cx="92" cy="252" rx="20" ry="18" fill="url(#fur)" />
-          <ellipse cx="148" cy="252" rx="20" ry="18" fill="url(#fur)" />
-          <ellipse cx="92" cy="254" rx="10" ry="7" fill="#e8c4a0" />
-          <ellipse cx="148" cy="254" rx="10" ry="7" fill="#e8c4a0" />
-
-          {/* guitar */}
-          <g transform="translate(120 200)">
-            <ellipse cx="0" cy="0" rx="42" ry="32" fill="#8b3a1a" stroke="#3a1a0a" strokeWidth="2" />
-            <ellipse cx="0" cy="0" rx="34" ry="24" fill="#a0481f" />
-            <circle cx="0" cy="0" r="8" fill="#1a0a05" />
-            <rect x="38" y="-5" width="48" height="10" rx="2" fill="#3a1a0a" />
-            <rect x="82" y="-9" width="8" height="18" rx="2" fill="#1a0a05" />
-            {/* strings */}
-            <line x1="-18" y1="-3" x2="84" y2="-3" stroke="#f0e0c0" strokeWidth="0.8" />
-            <line x1="-18" y1="0" x2="84" y2="0" stroke="#f0e0c0" strokeWidth="0.8" />
-            <line x1="-18" y1="3" x2="84" y2="3" stroke="#f0e0c0" strokeWidth="0.8" />
-          </g>
-
-          {/* left arm holding neck */}
-          <ellipse cx="180" cy="190" rx="14" ry="22" fill="url(#fur)" transform="rotate(40 180 190)" />
-
-          {/* right arm strumming */}
-          <g className="animate-strum" style={{ transformOrigin: "70px 170px" }}>
-            <ellipse cx="80" cy="200" rx="13" ry="22" fill="url(#fur)" transform="rotate(-30 80 200)" />
-          </g>
-
-          {/* bow tie */}
-          <path d="M105 145 L120 152 L135 145 L135 160 L120 152 L105 160 Z" fill="#ff4d7a" />
-          <circle cx="120" cy="152" r="3" fill="#c9355c" />
-        </svg>
-      </motion.div>
-
-      {showText && (
-        <motion.h2
-          initial={{ opacity: 0, y: 30, letterSpacing: "0.4em" }}
-          animate={{ opacity: 1, y: 0, letterSpacing: "0em" }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 font-display text-5xl md:text-7xl text-pink-100 text-center"
-          style={{ textShadow: "0 0 30px rgba(255,140,180,0.9), 0 0 60px rgba(255,90,150,0.5)" }}
-        >
-          ♪ Happy Birthday to U ♪
-        </motion.h2>
-      )}
     </div>
   );
 }
