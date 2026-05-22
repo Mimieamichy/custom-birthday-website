@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { StarField } from "@/components/StarField";
+import { startBirthdaySong, stopBirthdaySong } from "@/lib/birthdaySong";
+import { pauseBgMusic, resumeBgMusic } from "@/lib/bgMusic";
 
 const LETTERS = "HAPPY BIRTHDAY".split("");
 const CANDLE_COLORS = [
@@ -11,8 +13,14 @@ const CANDLE_COLORS = [
 
 export function SceneTeddy({ onDone }: { onDone: () => void }) {
   useEffect(() => {
+    pauseBgMusic();
+    startBirthdaySong();
     const t = setTimeout(onDone, 11000);
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t);
+      stopBirthdaySong();
+      resumeBgMusic();
+    };
   }, [onDone]);
 
   return (
