@@ -5,7 +5,8 @@ import { SceneCountdown } from "@/components/scenes/SceneCountdown";
 import { SceneTeddy } from "@/components/scenes/SceneTeddy";
 import { ScenePhotobook } from "@/components/scenes/ScenePhotobook";
 import { SceneFinale } from "@/components/scenes/SceneFinale";
-import { startBirthdaySong, setMuted as setSongMuted } from "@/lib/birthdaySong";
+import { startBgMusic, setBgMuted } from "@/lib/bgMusic";
+import { setMuted as setSongMuted } from "@/lib/birthdaySong";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -32,18 +33,19 @@ function Index() {
 
   const start = () => {
     setStarted(true);
-    startBirthdaySong();
+    startBgMusic();
   };
 
   const next = () => setSceneIndex((i) => Math.min(i + 1, SCENES.length - 1));
   const restart = () => {
     setSceneIndex(0);
-    startBirthdaySong();
+    startBgMusic();
   };
 
   const toggleMute = () => {
     const m = !muted;
     setMuted(m);
+    setBgMuted(m);
     setSongMuted(m);
   };
 
